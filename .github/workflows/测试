@@ -1,0 +1,31 @@
+name: ce
+
+on:
+  watch:
+    types: started
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  SSH_ACTIONS: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        tag: ce
+        commit: master
+        token: ${{ secrets.RELEASES_TOKEN }}
